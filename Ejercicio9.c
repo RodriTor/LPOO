@@ -20,7 +20,7 @@ int main() {
 
     switch(opcion) {
 
-        case 1: // MAYUSCULAS
+        case 1: 
             for(i = 0; i < strlen(oracion); i++) {
                 if(oracion[i] >= 'a' && oracion[i] <= 'z') {
                     oracion[i] = oracion[i] - 32;
@@ -29,7 +29,7 @@ int main() {
             printf("%s", oracion);
             break;
 
-        case 2: // minusculas
+        case 2: 
             for(i = 0; i < strlen(oracion); i++) {
                 if(oracion[i] >= 'A' && oracion[i] <= 'Z') {
                     oracion[i] = oracion[i] + 32;
@@ -41,14 +41,14 @@ int main() {
         case 3:
         	for(i = 0; i < strlen(oracion); i++) {
         if(oracion[i] >= 'a' && oracion[i] <= 'z') {
-            oracion[i] = oracion[i] - 32; // minúscula ? mayúscula
+            oracion[i] = oracion[i] - 32; 
         } else if(oracion[i] >= 'A' && oracion[i] <= 'Z') {
-            oracion[i] = oracion[i] + 32; // mayúscula ? minúscula
+            oracion[i] = oracion[i] + 32; 
         }
     }
     printf("%s", oracion);
     break;
-        case 4: // Primera letra de cada palabra en mayúscula
+        case 4: 
     int nueva_palabra = 1;
 
     for(i = 0; i < strlen(oracion); i++) {
