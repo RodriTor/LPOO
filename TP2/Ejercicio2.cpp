@@ -14,3 +14,4 @@ if(cadena[i] == 'a' || cadena[i] == 'e' || cadena[i] == 'i' || cadena[i] == 'o' 
 }
   printf("El numero de vocales son: %d", contador);
 }
+
