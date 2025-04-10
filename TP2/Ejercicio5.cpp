@@ -15,3 +15,6 @@ main() {
 	}
 	 printf("El numero de palabras es: %d\n", contador);
 	}
+
+
+
