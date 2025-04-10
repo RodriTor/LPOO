@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 char oracion[100];
 int i, opcion;
 
