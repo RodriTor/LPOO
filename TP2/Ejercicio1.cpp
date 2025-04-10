@@ -1,5 +1,5 @@
 
-PUNTO 1-TP2
+PUNTO 1-TP2 
 
 #include <stdio.h>
 char nombre[99];
