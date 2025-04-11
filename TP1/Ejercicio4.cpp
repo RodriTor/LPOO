@@ -10,7 +10,7 @@ int main() {
         printf("1 - Calcular hipotenusa (ingresando dos catetos)\n");
         printf("2 - Calcular cateto (ingresando hipotenusa y un cateto)\n");
         printf("0 - Salir\n");
-        printf("Ingrese una opción: ");
+        printf("Ingrese una opcion: ");
         scanf("%d", &opcion);
 
         switch (opcion) {
