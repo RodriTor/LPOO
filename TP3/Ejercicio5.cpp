@@ -1,22 +1,21 @@
 #include <stdio.h>
 
-// Función para concatenar dos cadenas usando punteros
 void concatenarCadenas(char *cadena1, char *cadena2, char *resultado) {
-    // Copiar cadena1 al resultado
+//Copio las 2 cadenas;
     while (*cadena1 != '\0') {
         *resultado = *cadena1;
         resultado++;
         cadena1++;
     }
 
-    // Copiar cadena2 al resultado, justo después
+
     while (*cadena2 != '\0') {
         *resultado = *cadena2;
         resultado++;
         cadena2++;
     }
 
-    // Agregar el carácter nulo al final ('\0')
+
     *resultado = '\0';
 }
 
