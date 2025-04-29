@@ -1,5 +1,6 @@
 #include <stdio.h>
-
+/* 6. Contar el número de ocurrencias de un elemento en un arreglo usando
+puntero y funciones */ 
 int contarOcurrencias(int *arr, int tam, int elemento) {
     int contador = 0;
 
