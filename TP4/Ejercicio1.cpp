@@ -76,3 +76,13 @@ int main() {
 
     return 0;
 }
+
+/*1) Realizar un programa en el cual se ingresen los siguientes datos Nombre, Apellido y
+DNI
+a) Crear un menú donde se ingresen los datos y los guarde en un archivo
+b) Otro ítem donde se pueda realizar una búsqueda por DNI y devuelva los datos de
+Nombre y apellido
+c) Salir del mismo
+2) Modificar el programa anterior de manera que se puedan realizar búsquedas por
+Apellido y por nombre a la vez.
+3) Agregar validación de datos de manera que no se repitan cuando sea necesario. */
