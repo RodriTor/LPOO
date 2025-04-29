@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+/*5. Concatenar dos cadenas usando punteros y funciones.*/
 void concatenarCadenas(char *cadena1, char *cadena2, char *resultado) {
 //Copio las 2 cadenas;
     while (*cadena1 != '\0') {
