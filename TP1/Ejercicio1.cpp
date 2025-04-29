@@ -1,33 +1,3 @@
-/*
-Trabajo Practico 1 (repaso)
-
-1) Se debe realizar un programa el cual se solicite la siguiente información al usuario    
-Nombre, Apellido, Fecha de nacimiento, y DNI.  Y luego informe si puede o no votar  y los
-datos de Apellido, Nombre y DNI
-Sabiendo que las elecciones son el 30 de septiembre, y pueden votar los mayores de 16 años
-2) Realizar una mejora al programa anterior con las siguientes condiciones
-  Sabiendo que las elecciones son el 30 de septiembre,
-  Menor de 16 años no puede votar
-  Mayor de 16 años (inclusive) y menor de 18 años puede votar
-  Mayor de 18 años (inclusive) y menor de 80 años debe votar
-  Mayor de 80 años (inclusive)  puede votar
-3) Se solicita realizar un software que pida al usuario los datos de los catetos de un triángulo
-rectángulo y luego me informe cual es el valor de su hipotenusa
-4) Realizar una modificación al programa anterior, para el ingreso de dos de cualquiera de sus
-lados, y me devuelva el valor de sus catetos y de su hipotenusa
-5) Al ingresar un número se debe informar si es primo o no es primo
-6) Dada una lista de números informar
-  a) la cantidad de números ingresada
-  b) la cantidad de números que son primos
-  c) la cantidad de números que no son primos
-7) Realizar el mismo ejercicio anterior para los números pares e impares
-8) Dado un vector con números ordenarlo con los siguientes criterios prioritarios
-    a) números primos de menor a mayor
-  b) números impares de mayor a menor
-  c) Números pares de menor a mayor
-*/
-
-
 
 #include <stdio.h>
 
@@ -77,3 +47,34 @@ int main() {
 
     return 0;
 }
+
+/*
+/*
+Trabajo Practico 1 (repaso)
+
+1) Se debe realizar un programa el cual se solicite la siguiente información al usuario    
+Nombre, Apellido, Fecha de nacimiento, y DNI.  Y luego informe si puede o no votar  y los
+datos de Apellido, Nombre y DNI
+Sabiendo que las elecciones son el 30 de septiembre, y pueden votar los mayores de 16 años
+2) Realizar una mejora al programa anterior con las siguientes condiciones
+  Sabiendo que las elecciones son el 30 de septiembre,
+  Menor de 16 años no puede votar
+  Mayor de 16 años (inclusive) y menor de 18 años puede votar
+  Mayor de 18 años (inclusive) y menor de 80 años debe votar
+  Mayor de 80 años (inclusive)  puede votar
+3) Se solicita realizar un software que pida al usuario los datos de los catetos de un triángulo
+rectángulo y luego me informe cual es el valor de su hipotenusa
+4) Realizar una modificación al programa anterior, para el ingreso de dos de cualquiera de sus
+lados, y me devuelva el valor de sus catetos y de su hipotenusa
+5) Al ingresar un número se debe informar si es primo o no es primo
+6) Dada una lista de números informar
+  a) la cantidad de números ingresada
+  b) la cantidad de números que son primos
+  c) la cantidad de números que no son primos
+7) Realizar el mismo ejercicio anterior para los números pares e impares
+8) Dado un vector con números ordenarlo con los siguientes criterios prioritarios
+    a) números primos de menor a mayor
+  b) números impares de mayor a menor
+  c) Números pares de menor a mayor
+*/
+*/
