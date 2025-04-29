@@ -1,6 +1,122 @@
 #include <stdio.h>
 #include <math.h>
 
+// Multiplicación por sumas reiteradas
+int multiplicacion(int a, int b) {
+    int resultado = 0;
+    for (int i = 0; i < b; i++) {
+        resultado += a;
+    }
+    return resultado;
+}
+
+// Raíz cuadrada (racional)
+float raiz(float *num) {
+    return sqrt(*num);
+}
+
+// Suma de n vectores
+void sumaVectores(int n) {
+    int vector[100] = {0};
+    int temp[100];
+    int tam;
+
+    printf("Ingrese la cantidad de elementos de los vectores: ");
+    scanf("%d", &tam);
+
+    for (int i = 0; i < n; i++) {
+        printf("Vector %d:\n", i + 1);
+        for (int j = 0; j < tam; j++) {
+            printf("Elemento %d: ", j + 1);
+            scanf("%d", &temp[j]);
+            vector[j] += temp[j];
+        }
+    }
+
+    printf("Resultado de la suma:\n");
+    for (int i = 0; i < tam; i++) {
+        printf("%d ", vector[i]);
+    }
+    printf("\n");
+}
+
+// Multiplicación escalar
+void multiplicacionEscalar(int n) {
+    int v1[100], v2[100];
+    int resultado = 0;
+
+    printf("Ingrese los elementos del primer vector:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Elemento %d: ", i + 1);
+        scanf("%d", &v1[i]);
+    }
+
+    printf("Ingrese los elementos del segundo vector:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Elemento %d: ", i + 1);
+        scanf("%d", &v2[i]);
+    }
+
+    for (int i = 0; i < n; i++) {
+        resultado += v1[i] * v2[i];
+    }
+
+    printf("Resultado de la multiplicación escalar: %d\n", resultado);
+}
+
+int main() {
+    int opcion;
+
+    printf("Seleccione una opción:\n");
+    printf("1. Multiplicación de Nº Natural (por sumas reiteradas)\n");
+    printf("2. Raíz cuadrada de un Nº racional\n");
+    printf("3. Suma de n vectores\n");
+    printf("4. Multiplicación escalar de 2 vectores\n");
+    printf("Opción: ");
+    scanf("%d", &opcion);
+
+    switch (opcion) {
+        case 1: {
+            int a, b;
+            printf("Ingrese dos números naturales: ");
+            scanf("%d %d", &a, &b);
+            int res = multiplicacion(a, b);
+            printf("Resultado: %d\n", res);
+            break;
+        }
+        case 2: {
+            float num;
+            printf("Ingrese un número racional: ");
+            scanf("%f", &num);
+            printf("Raíz: %.2f\n", raiz(&num));
+            break;
+        }
+        case 3: {
+            int cantidad;
+            printf("¿Cuántos vectores desea sumar?: ");
+            scanf("%d", &cantidad);
+            sumaVectores(cantidad);
+            break;
+        }
+        case 4: {
+            int n;
+            printf("Ingrese la cantidad de elementos en los vectores: ");
+            scanf("%d", &n);
+            multiplicacionEscalar(n);
+            break;
+        }
+        default:
+            printf("Opción no válida.\n");
+            break;
+    }
+
+    return 0;
+}
+
+
+#include <stdio.h>
+#include <math.h>
+
 int multiplicacion(int a, int b) {
     int resultado = 0;
     for (int i = 0; i < b; i++) {
