@@ -1,4 +1,69 @@
 #include <stdio.h>
+#include <string.h>
+
+int contar_palabras(char *linea) {
+    int contar = 0;
+    int en_palabra = 0;
+    for (int i = 0; linea[i] != '\0'; i++) {
+        if (linea[i] != ' ' && linea[i] != '\n') {
+            if (!en_palabra) {
+                contar++;
+                en_palabra = 1;
+            }
+        } else {
+            en_palabra = 0;
+        }
+    }
+    return contar;
+}
+
+int main() {
+    FILE *archivo;
+    char linea[100][200]; // Máximo 100 líneas, cada una de hasta 199 caracteres
+    int total_lineas = 0, total_palabras = 0;
+    int max_palabras = 0, indice_max = 0;
+
+    archivo = fopen("datos.txt", "w");
+    if (archivo == NULL) {
+        printf("No se pudo crear el archivo.\n");
+        return 1;
+    }
+
+    printf("Ingrese el contenido del archivo (una línea por vez, escriba 'FIN' para terminar):\n");
+    while (1) {
+        fgets(linea[total_lineas], 200, stdin);
+        if (strncmp(linea[total_lineas], "FIN", 3) == 0)
+            break;
+        fputs(linea[total_lineas], archivo);
+        total_lineas++;
+    }
+    fclose(archivo);
+
+    archivo = fopen("datos.txt", "r");
+    if (archivo == NULL) {
+        printf("No se pudo abrir el archivo.\n");
+        return 1;
+    }
+
+    for (int i = 0; i < total_lineas; i++) {
+        int palabras = contar_palabras(linea[i]);
+        total_palabras += palabras;
+        if (palabras > max_palabras) {
+            max_palabras = palabras;
+            indice_max = i;
+        }
+    }
+
+    printf("\nCantidad total de palabras: %d\n", total_palabras);
+    printf("Línea con más palabras (%d palabras): %s", max_palabras, linea[indice_max]);
+
+    fclose(archivo);
+    return 0;
+}
+
+
+
+#include <stdio.h>
 #include <math.h>
 
 // Multiplicación por sumas reiteradas
