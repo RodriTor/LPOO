@@ -232,3 +232,28 @@ int main() {
 
     return 0;
 }
+
+
+/*
+
+1) Realizar un programa, con funciones y punteros, que pida al usuario el ingreso de los
+elementos correspondientes y luego según su opción elegida realice
+a. Potencia o de un Nº racional
+b. Raiz de un Nº racional
+c. Suma de 2 vectores
+d. Multiplicación escalar de 2 vectores (3 elementos)
+2) Realizar un programa que le pida al usuario que ingrese una oración y luego ordene
+las palabras en una nueva oración pero ordenada alfabéticamente
+3) Ingresar un vector numérico y luego mostrar el vector de manera que estén primero
+los números primos ordenados de menor a mayor y luego de manera descendente los
+no primos,
+4) • Crea un archivo de texto llamado datos.txt con varias líneas de texto.
+
+Escribe un programa en C que abra el archivo datos.txt, lea su contenido línea
+por línea y realice las siguientes estadísticas:
+a. Contar el número total de líneas.
+b. Contar el número total de palabras (asume que las palabras están separadas
+por espacios).
+c. Imprime los resultados en la consola.
+
+    */
