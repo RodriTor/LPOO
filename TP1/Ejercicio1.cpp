@@ -1,6 +1,59 @@
 #include <stdio.h>
 #include <string.h>
 
+#define MAX_LINEAS 100
+#define MAX_TEXTO 200
+
+int contarPalabras(char *linea) {
+    int cuenta = 0, enPalabra = 0;
+    for (int i = 0; linea[i] != '\0'; i++) {
+        if (linea[i] != ' ' && linea[i] != '\n') {
+            if (!enPalabra) {
+                cuenta++;
+                enPalabra = 1;
+            }
+        } else {
+            enPalabra = 0;
+        }
+    }
+    return cuenta;
+}
+
+int main() {
+    char lineas[MAX_LINEAS][MAX_TEXTO];
+    char lineaMax[MAX_TEXTO] = "";
+    int totalPalabras = 0, maxPalabras = 0;
+    int cantidadLineas = 0;
+
+    printf("Ingrese líneas de texto (escriba 'FIN' para terminar):\n");
+
+    while (cantidadLineas < MAX_LINEAS) {
+        fgets(lineas[cantidadLineas], MAX_TEXTO, stdin);
+
+        if (strncmp(lineas[cantidadLineas], "FIN", 3) == 0)
+            break;
+
+        int palabras = contarPalabras(lineas[cantidadLineas]);
+        totalPalabras += palabras;
+
+        if (palabras > maxPalabras) {
+            maxPalabras = palabras;
+            strcpy(lineaMax, lineas[cantidadLineas]);
+        }
+
+        cantidadLineas++;
+    }
+
+    printf("\nCantidad total de palabras: %d\n", totalPalabras);
+    printf("Línea con más palabras: %s\n", lineaMax);
+
+    return 0;
+}
+
+
+#include <stdio.h>
+#include <string.h>
+
 int contarPalabras(char *linea) {
     int cuenta = 0, enPalabra = 0;
     for (int i = 0; linea[i] != '\0'; i++) {
