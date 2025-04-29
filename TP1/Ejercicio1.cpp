@@ -1,4 +1,68 @@
 #include <stdio.h>
+#include <math.h>
+
+int multiplicacion(int a, int b) {
+    int resultado = 0;
+    for (int i = 0; i < b; i++) {
+        resultado += a;
+    }
+    return resultado;
+}
+
+float raiz(float *num) {
+    return sqrt(*num);
+}
+
+void sumaVectores(int n) {
+    int vector[100] = {0};
+    int temp[100];
+    int tam;
+
+    printf("Ingrese la cantidad de elementos de los vectores: ");
+    scanf("%d", &tam);
+
+    for (int i = 0; i < n; i++) {
+        printf("Vector %d:\n", i + 1);
+        for (int j = 0; j < tam; j++) {
+            printf("Elemento %d: ", j + 1);
+            scanf("%d", &temp[j]);
+            vector[j] += temp[j];
+        }
+    }
+
+    printf("Resultado de la suma:\n");
+    for (int i = 0; i < tam; i++) {
+        printf("%d ", vector[i]);
+    }
+    printf("\n");
+}
+
+void multiplicacionEscalar(int n) {
+    int v1[100], v2[100];
+    int resultado = 0;
+
+    printf("Ingrese los elementos del primer vector:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Elemento %d: ", i + 1);
+        scanf("%d", &v1[i]);
+    }
+
+    printf("Ingrese los elementos del segundo vector:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Elemento %d: ", i + 1);
+        scanf("%d", &v2[i]);
+    }
+
+    for (int i = 0; i < n; i++) {
+        resultado += v1[i] * v2[i];
+    }
+
+    printf("Resultado de la multiplicación escalar: %d\n", resultado);
+}
+
+int main
+
+#include <stdio.h>
 #include <string.h>
 
 #define MAX_LINEAS 100
