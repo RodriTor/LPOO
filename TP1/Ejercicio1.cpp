@@ -1,4 +1,44 @@
+#include <stdio.h>
+#include <string.h>
 
+void ordenarDescendente(char palabras[][20], int n) {
+    char aux[20];
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (strcmp(palabras[i], palabras[j]) < 0) {
+                strcpy(aux, palabras[i]);
+                strcpy(palabras[i], palabras[j]);
+                strcpy(palabras[j], aux);
+            }
+        }
+    }
+}
+
+int main() {
+    char oracion[200];
+    char palabras[50][20];
+    int cantidad = 0;
+
+    printf("Ingrese una oración: ");
+    fgets(oracion, sizeof(oracion), stdin);
+
+    char *palabra = strtok(oracion, " \n");
+    while (palabra != NULL) {
+        strcpy(palabras[cantidad], palabra);
+        cantidad++;
+        palabra = strtok(NULL, " \n");
+    }
+
+    ordenarDescendente(palabras, cantidad);
+
+    printf("Oración ordenada alfabéticamente descendente:\n");
+    for (int i = 0; i < cantidad; i++) {
+        printf("%s ", palabras[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
 #include <stdio.h>
 
 char nombre[15], apellido[15];
