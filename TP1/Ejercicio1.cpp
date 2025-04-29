@@ -2,6 +2,55 @@
 #include <string.h>
 
 int contarPalabras(char *linea) {
+    int cuenta = 0, enPalabra = 0;
+    for (int i = 0; linea[i] != '\0'; i++) {
+        if (linea[i] != ' ' && linea[i] != '\n') {
+            if (!enPalabra) {
+                cuenta++;
+                enPalabra = 1;
+            }
+        } else {
+            enPalabra = 0;
+        }
+    }
+    return cuenta;
+}
+
+int main() {
+    FILE *archivo;
+    char linea[200];
+    int totalPalabras = 0;
+    int maxPalabras = 0;
+    char lineaMax[200] = "";
+
+    archivo = fopen("datos.txt", "r");
+    if (archivo == NULL) {
+        printf("No se pudo abrir el archivo.\n");
+        return 1;
+    }
+
+    while (fgets(linea, sizeof(linea), archivo)) {
+        int cantidad = contarPalabras(linea);
+        totalPalabras += cantidad;
+        if (cantidad > maxPalabras) {
+            maxPalabras = cantidad;
+            strcpy(lineaMax, linea);
+        }
+    }
+
+    fclose(archivo);
+
+    printf("\nCantidad total de palabras: %d\n", totalPalabras);
+    printf("Línea con más palabras: %s\n", lineaMax);
+
+    return 0;
+}
+
+
+#include <stdio.h>
+#include <string.h>
+
+int contarPalabras(char *linea) {
     int cuenta = 0;
     int enPalabra = 0;
 
