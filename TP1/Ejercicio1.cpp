@@ -1,6 +1,58 @@
 #include <stdio.h>
 #include <string.h>
 
+int contarPalabras(char *linea) {
+    int cuenta = 0;
+    int enPalabra = 0;
+
+    for (int i = 0; linea[i] != '\0'; i++) {
+        if (linea[i] != ' ' && linea[i] != '\n') {
+            if (!enPalabra) {
+                cuenta++;
+                enPalabra = 1;
+            }
+        } else {
+            enPalabra = 0;
+        }
+    }
+    return cuenta;
+}
+
+int main() {
+    FILE *archivo;
+    char linea[200];
+    int totalPalabras = 0;
+    int maxPalabras = 0;
+    char lineaMax[200];
+
+    archivo = fopen("datos.txt", "r");
+    if (archivo == NULL) {
+        printf("No se pudo abrir el archivo.\n");
+        return 1;
+    }
+
+    printf("Contenido del archivo:\n");
+    while (fgets(linea, sizeof(linea), archivo)) {
+        printf("%s", linea);
+        int palabras = contarPalabras(linea);
+        totalPalabras += palabras;
+        if (palabras > maxPalabras) {
+            maxPalabras = palabras;
+            strcpy(lineaMax, linea);
+        }
+    }
+
+    fclose(archivo);
+
+    printf("\nTotal de palabras: %d\n", totalPalabras);
+    printf("Línea con más palabras: %s", lineaMax);
+
+    return 0;
+}
+
+#include <stdio.h>
+#include <string.h>
+
 void ordenarDescendente(char palabras[][20], int n) {
     char aux[20];
     for (int i = 0; i < n - 1; i++) {
