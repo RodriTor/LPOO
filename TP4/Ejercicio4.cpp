@@ -1,259 +1,229 @@
 #include <stdio.h>
-#include <math.h>
-
-void potencia(float *base, int *exponente) {
-    printf("Resultado: %.2f\n", pow(*base, *exponente));
-}
-
-void raiz(float *numero) {
-    printf("Resultado: %.2f\n", sqrt(*numero));
-}
-
-void sumaVectores() {
-    int a[3], b[3], resultado[3];
-    printf("Ingrese 3 números para el vector A:\n");
-    for (int i = 0; i < 3; i++) scanf("%d", &a[i]);
-    printf("Ingrese 3 números para el vector B:\n");
-    for (int i = 0; i < 3; i++) scanf("%d", &b[i]);
-    for (int i = 0; i < 3; i++) resultado[i] = a[i] + b[i];
-    printf("Vector resultado: ");
-    for (int i = 0; i < 3; i++) printf("%d ", resultado[i]);
-    printf("\n");
-}
-
-void multiplicacionEscalar() {
-    int a[3], b[3], producto = 0;
-    printf("Ingrese 3 números para el vector A:\n");
-    for (int i = 0; i < 3; i++) scanf("%d", &a[i]);
-    printf("Ingrese 3 números para el vector B:\n");
-    for (int i = 0; i < 3; i++) scanf("%d", &b[i]);
-    for (int i = 0; i < 3; i++) producto += a[i] * b[i];
-    printf("Resultado del producto escalar: %d\n", producto);
-}
-
-int main() {
-    int opcion;
-    float num;
-    int exp;
-
-    do {
-        printf("\n1. Potencia\n2. Raíz\n3. Suma de vectores\n4. Producto escalar\n5. Salir\n");
-        printf("Elija una opción: ");
-        scanf("%d", &opcion);
-
-        switch (opcion) {
-            case 1:
-                printf("Ingrese base: ");
-                scanf("%f", &num);
-                printf("Ingrese exponente: ");
-                scanf("%d", &exp);
-                potencia(&num, &exp);
-                break;
-            case 2:
-                printf("Ingrese número: ");
-                scanf("%f", &num);
-                raiz(&num);
-                break;
-            case 3:
-                sumaVectores();
-                break;
-            case 4:
-                multiplicacionEscalar();
-                break;
-            case 5:
-                printf("Programa finalizado.\n");
-                break;
-            default:
-                printf("Opción inválida.\n");
-        }
-    } while (opcion != 5);
-
-    return 0;
-}
-
-
-
-
-
-
-
-
-
-
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
-int main() {
-    char oracion[200], *palabras[50];
-    int cant = 0;
-
-    printf("Ingrese una oración: ");
-    fgets(oracion, sizeof(oracion), stdin);
-
-    char *token = strtok(oracion, " \n");
-    while (token != NULL) {
-        palabras[cant++] = token;
-        token = strtok(NULL, " \n");
-    }
-
-    for (int i = 0; i < cant - 1; i++) {
-        for (int j = i + 1; j < cant; j++) {
-            if (strcmp(palabras[i], palabras[j]) > 0) {
-                char *aux = palabras[i];
-                palabras[i] = palabras[j];
-                palabras[j] = aux;
-            }
-        }
-    }
-
-    printf("Oración ordenada: ");
-    for (int i = 0; i < cant; i++) {
-        printf("%s ", palabras[i]);
-    }
-    printf("\n");
-
-    return 0;
-}
-
-
-
-
-
-
-#include <stdio.h>
-
-int esPrimo(int n) {
-    if (n < 2) return 0;
-    for (int i = 2; i * i <= n; i++)
-        if (n % i == 0) return 0;
-    return 1;
-}
-
-void ordenarAsc(int v[], int n) {
-    for (int i = 0; i < n-1; i++)
-        for (int j = i+1; j < n; j++)
-            if (v[i] > v[j]) {
-                int aux = v[i];
-                v[i] = v[j];
-                v[j] = aux;
-            }
-}
-
-void ordenarDesc(int v[], int n) {
-    for (int i = 0; i < n-1; i++)
-        for (int j = i+1; j < n; j++)
-            if (v[i] < v[j]) {
-                int aux = v[i];
-                v[i] = v[j];
-                v[j] = aux;
-            }
-}
-
-int main() {
-    int v[50], primos[50], noPrimos[50];
-    int n, p = 0, np = 0;
-
-    printf("Ingrese cantidad de elementos: ");
-    scanf("%d", &n);
-
-    printf("Ingrese los números:\n");
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &v[i]);
-        if (esPrimo(v[i]))
-            primos[p++] = v[i];
-        else
-            noPrimos[np++] = v[i];
-    }
-
-    ordenarAsc(primos, p);
-    ordenarDesc(noPrimos, np);
-
-    printf("Vector ordenado: ");
-    for (int i = 0; i < p; i++) printf("%d ", primos[i]);
-    for (int i = 0; i < np; i++) printf("%d ", noPrimos[i]);
-    printf("\n");
-
-    return 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#include <stdio.h>
 #include <string.h>
 
-int main() {
-    FILE *archivo = fopen("datos.txt", "r");
-    char linea[200];
-    int lineas = 0, palabras = 0;
+//Para mostrar todos los registros segun nombre, apellido o DNI usaria un fscanf y almacenaria un array de cada dato y luego lo muestro.
 
-    if (archivo == NULL) {
-        printf("No se pudo abrir el archivo.\n");
-        return 1;
-    }
+int validarArchivo(FILE *ar);
+void ingresarPersona(FILE *ar);
+int validarPersona(FILE *ar, int dniIngreso);
+void buscarPorDni(FILE *ar);
+void buscarPersona(FILE *ar);
+void mostrarOrdenado(FILE *ar, int opc);
 
-    while (fgets(linea, sizeof(linea), archivo)) {
-        lineas++;
-        char *token = strtok(linea, " \n");
-        while (token != NULL) {
-            palabras++;
-            token = strtok(NULL, " \n");
-        }
-    }
 
-    fclose(archivo);
+int main(){
+	FILE *archivo;
+	int opc, opcOrdenado;
+	
+	do{
+		printf("\nIngrese 1 para ingresar datos\nIngrese 2 para buscar por DNI\nIngrese 3 para buscar por nombre y apellido\nIngrese 4 para mostrar todos los datos.\nIngrese 0 para salir.\n\nIngrese opcion: ");
+		scanf("%d", &opc);
+		while(opc < 0 || opc > 4){
+			printf("Error, ingrese de nuevo: ");
+			scanf("%d", &opc);
+		}
+		
+		switch(opc){
+			case 1:
+				archivo = fopen("datos.txt", "a+"); // a+ lo que hace es leer y escribir acoplando.	
+				rewind(archivo); // va hacia al principio porque el a+ lo requiere.
+				
+				if(validarArchivo(archivo) != 1){				
+					ingresarPersona(archivo);	
+				}
+			
+				fclose(archivo);
+			
+			break;
+			
+			
+			case 2:
+				archivo = fopen("datos.txt", "r");
+				
+				if(validarArchivo(archivo) != 1){
+					buscarPorDni(archivo);
+				}							
+			
+				fclose(archivo);
+			
+			break;
+			
+			
+			case 3:
+				archivo = fopen("datos.txt", "r");
+				
+				if(validarArchivo(archivo) != 1){
+					buscarPersona(archivo);
+				}
+				
+				fclose(archivo);				
+			
+			break;
+		
+			case 4:
+				archivo = fopen("datos.txt", "r");
+				
+				if(validarArchivo(archivo) != 1){
+					printf("\tIngrese 5 para ordenar por nombre primero.\n\tIngrese 6 para ordenar por apellido primero.\n\tIngrese 7 para ordenar por DNI primero.\n\tIngrese opcion: ");
+					scanf("%d", &opcOrdenado);
+					mostrarOrdenado(archivo, opcOrdenado);
+				}
+				
+				fclose(archivo);
+				
+			break;
+		
+			case 0:
+				printf("\n\nSaliendo.");
+			break;
+		}
+	} while(opc != 0);
+	
+	
+	return 0;
+}
 
-    printf("Cantidad de líneas: %d\n", lineas);
-    printf("Cantidad de palabras: %d\n", palabras);
-
-    return 0;
+int validarArchivo(FILE *ar){
+		if(ar == NULL){
+			printf("\nError al abrir el archivo\n\n");
+			return 1;
+		}
+		else{
+			return 0;
+		}		
 }
 
 
-/*
+void ingresarPersona(FILE *ar){
+	char n[50], a[50];
+	int d;		
+			printf("\n\nIngrese nombre: ");
+			scanf("%s", n);
+			printf("Ingrese apellido: ");
+			scanf("%s", a);
+			printf("Ingrese DNI: ");
+			scanf("%d", &d);
+			printf("\n");
+			
+			if(validarPersona(ar, d) != 1){
+				fprintf(ar, "Nombre: %s ", n);
+				fprintf(ar, "Apellido: %s ", a);
+				fprintf(ar, "DNI: %d\n", d);
+			}
+			else{
+				printf("\nError de ingreso, ya existe una persona con el mismo DNI.\n\n");
+			}
+	}
+	
+	
+int validarPersona(FILE *ar, int dniIngreso){
+	char nombre[50], apellido[50];
+	int DNI, repetido=0;
+	
+	while(fscanf(ar, "Nombre: %s Apellido: %s DNI: %d\n", nombre, apellido, &DNI) == 3 && repetido != 1){
+		if(DNI == dniIngreso){
+			repetido = 1;
+		}
+	}
+	
+	return repetido;	
+	
+}	
 
-1) Realizar un programa, con funciones y punteros, que pida al usuario el ingreso de los
-elementos correspondientes y luego según su opción elegida realice
-a. Potencia o de un Nº racional
-b. Raiz de un Nº racional
-c. Suma de 2 vectores
-d. Multiplicación escalar de 2 vectores (3 elementos)
-2) Realizar un programa que le pida al usuario que ingrese una oración y luego ordene
-las palabras en una nueva oración pero ordenada alfabéticamente
-3) Ingresar un vector numérico y luego mostrar el vector de manera que estén primero
-los números primos ordenados de menor a mayor y luego de manera descendente los
-no primos,
-4) • Crea un archivo de texto llamado datos.txt con varias líneas de texto.
+	
+	
+void buscarPorDni(FILE *ar){
+	char nombre[50], apellido[50];
+	int	encontrado=0, DNI, dniBuscado;
 
-Escribe un programa en C que abra el archivo datos.txt, lea su contenido línea
-por línea y realice las siguientes estadísticas:
-a. Contar el número total de líneas.
-b. Contar el número total de palabras (asume que las palabras están separadas
-por espacios).
-c. Imprime los resultados en la consola.
+	printf("\nIngrese un DNI: ");
+	scanf("%d", &dniBuscado);
+	
+		while(fscanf(ar, "Nombre: %s Apellido: %s DNI: %d\n", nombre, apellido, &DNI) == 3 && encontrado != 1){
+				if(DNI == dniBuscado){
+					printf("\nNombre: %s\nApellido: %s\n", nombre, apellido);
+					encontrado = 1;
+				}
+		}
+}
+	
+	
+void buscarPersona(FILE *ar){		
+	char nomBuscado[50], apeBuscado[50], nombre[50], apellido[50];
+	int DNI;		
+		
+			printf("\nIngrese el nombre a buscar: ");
+			scanf("%s", nomBuscado);
+			printf("Ingrese el apellido a buscar: ");
+			scanf("%s", apeBuscado);
+		
+		int encontrado = 0;		
+		
+		while(fscanf(ar, "Nombre: %s Apellido: %s DNI: %d\n", nombre, apellido, &DNI) == 3 && encontrado != 1){
+			if(strcmp(nombre, nomBuscado) == 0 && strcmp(apellido, apeBuscado) == 0){
+				printf("\nPersona encontrada:\nNombre: %s\nApellido: %s\nDNI: %d\n", nombre, apellido, DNI);
+				encontrado = 1;		
+			}
+		}
+	
+		if(encontrado == 0){
+			printf("\nLa persona buscada no fue encontrada.\n");
+		}
+}
 
-    */
+void mostrarOrdenado(FILE *ar, int opc){
+	char nombre[50], apellido[50];
+	int DNI, DNIs[50];	
+	char nombres[25][50], apellidos[25][50];
+	int N=0, i=0, j=0;
+	
+	
+	
+	while(fscanf(ar, "Nombre: %s Apellido: %s DNI: %d\n", nombre, apellido, &DNI) == 3){
+		strcpy(nombres[i], nombre);
+		strcpy(apellidos[i], apellido);
+		DNIs[i] = DNI;
+		i++;
+		N++;
+	}
+	
+	// Ordenamiento burbuja segun opcion
+	for(i=0; i < N - 1; i++){
+		for(j=0; j < N - i - 1; j++){
+			int cmp = 0;
+			
+			if(opc == 5){
+				cmp = strcmp(nombres[j], nombres[j + 1]) > 0;
+			}
+			else if(opc == 6){
+				cmp = strcmp(apellidos[j], apellidos[j + 1]) > 0;
+			}
+			else if(opc == 7){
+				cmp = DNIs[j] > DNIs[j + 1];
+			}
+			
+			if(cmp == 1){
+				char temp[50];
+				strcpy(temp, nombres[j]);
+				strcpy(nombres[j], nombres[j + 1]);
+				strcpy(nombres[j + 1], temp);
+				
+				strcpy(temp, apellidos[j]);
+				strcpy(apellidos[j], apellidos[j + 1]);
+				strcpy(apellidos[j + 1], temp);
+
+				int tempDNIs = DNIs[j];
+				DNIs[j] = DNIs[j + 1];
+				DNIs[j + 1] = tempDNIs;
+			}
+			
+			
+		}
+	}	
+	
+	for(i=0; i < N; i++){
+		printf("\nPersona numero %d:\n", i + 1);
+		printf("Nombre: %s\nApellido: %s\nDNI: %d\n\n", nombres[i], apellidos[i], DNIs[i]);
+	}	
+	
+}
