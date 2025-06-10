@@ -13,3 +13,28 @@ public class ClasePrimaria {
 		}
 	}
 }
+
+classDiagram
+    class Libro {
+        -String titulo
+        -String autor
+        -String isbn
+        +void mostrarInformacion()
+    }
+
+    class Socio {
+        -String nombre
+        -String direccion
+        -String numeroSocio
+        +void mostrarInformacion()
+    }
+
+    class Prestamo {
+        -Date fechaPrestamo
+        -Date fechaDevolucion
+        +void registrarPrestamo()
+        +void registrarDevolucion()
+    }
+
+    Socio "1" -- "0..*" Prestamo : realiza
+    Libro "1" -- "0..1" Prestamo : es prestado
