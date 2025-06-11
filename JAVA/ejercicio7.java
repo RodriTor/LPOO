@@ -8,14 +8,14 @@ public class ejercicio7 {
 		System.out.println("Ingrese frase: ");
 		frase = scanner.nextLine();
 		
-		int ContadorVocales;
-		int ContadorConsonantes;
+		int ContadorVocales = 0;
+		int ContadorConsonantes = 0;
 		
 		frase = frase.toLowerCase();
 
 		for(int i = 0; i < frase.length(); i++) {
-			char texton = texton.charAt(i);
-			if(texton = 'a' || texton = 'e') {
+			char texton = frase.charAt(i);
+			if(texton == 'a' || texton == 'e' || texton == 'i' || texton == 'o' || texton == 'u') {
 				ContadorVocales++;
 			}
 			else {
@@ -23,7 +23,8 @@ public class ejercicio7 {
 			}
 		}
 		
-		System.out.println 
+		System.out.println("Las vocales en la frase: " +  frase + " son: " + ContadorVocales);
+		System.out.println("Las consonantes en la frase: " +  frase + " son: " + ContadorConsonantes);
 		scanner.close();
 	}
 
