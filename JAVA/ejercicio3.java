@@ -4,19 +4,23 @@ public class ejercicio3 {
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		int numero;
+		int divisores;
 		
+		do {
 		System.out.println("Ingrese un numero: ");
 	    numero = scanner.nextInt();
-
+		divisores = 0;
 	    if(numero > 100) {
-	    	boolean esPrimo true;
-	        for (int j = 2; j <= i/2; j++) {
-	            if (i % j == 0) {
-	                esPrimo = false;
-	                break;
-	            }
-	        }
+	    	for(int i=1; i<numero; i++) {
+	    		if(numero % i == 0) {
+	    			divisores++;
+	    		}
+	    	}
 	    }
+		
+		}while(numero < 100);
+		
+		System.out.println(numero + " Es mayor que 100 y es primo");
 	}
 
 }
