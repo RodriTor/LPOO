@@ -127,8 +127,9 @@ public class calculadoraGUI extends JFrame {
         panel.add(scrollPane, BorderLayout.NORTH);
 
         // Panel de botones para operaciones básicas
-        JPanel buttonPanel = new JPanel(new GridLayout(2, 4, 5, 5));
-        String[] operations = {"Suma", "Resta", "Multiplicación", "División", "Modulo", "Seno", "Coseno", "Tangente"};
+        // Solo las 4 operaciones principales
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 5, 5)); // 2 filas, 2 columnas para 4 botones
+        String[] operations = {"Suma", "Resta", "Multiplicación", "División"};
         for (String op : operations) {
             JButton btn = new JButton(op);
             btn.addActionListener(e -> executeBasicOperation(op));
@@ -632,6 +633,7 @@ public class calculadoraGUI extends JFrame {
                     }
                     print(String.format("División: %.4f", result));
                     break;
+                /* Eliminadas por petición del usuario
                 case "Modulo":
                     if (numbers.size() < 2) throw new IllegalArgumentException("Se necesitan al menos dos números para el módulo.");
                     result = numbers.get(0) % numbers.get(1);
@@ -652,6 +654,7 @@ public class calculadoraGUI extends JFrame {
                     result = Math.tan(Math.toRadians(numbers.get(0)));
                     print(String.format("Tangente(%.2f°): %.4f", numbers.get(0), result));
                     break;
+                */
             }
         } catch (NumberFormatException e) {
             printErr("Entrada numérica inválida: " + e.getMessage());
