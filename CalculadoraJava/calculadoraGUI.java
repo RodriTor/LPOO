@@ -14,7 +14,9 @@ import java.util.stream.Collectors;
 
 public class calculadoraGUI extends JFrame {
 
-    // Área de salida unificada para todos los resultados y errores
+    private double ans = 0.0; 
+
+
     private final JTextArea outputArea = new JTextArea(5, 40);
 
     // --- Pestaña Básicas ---
@@ -27,27 +29,27 @@ public class calculadoraGUI extends JFrame {
     private JTextField indiceRaizField;
 
     // --- Pestaña Vectores ---
-    private JTextField[][] vectorFields1; // Para el primer vector
-    private JTextField[][] vectorFields2; // Para el segundo vector (cuando aplica)
+    private JTextField[][] vectorFields1; 
+    private JTextField[][] vectorFields2; 
     private JTextField escalarVectorField;
     private JComboBox<String> vectorOperationComboBox;
     private JComboBox<String> vectorDimensionComboBox;
-    private JPanel vectorInputPanel1TwoVecs; // Panel para Vector 1 en vista de dos vectores
-    private JPanel vectorInputPanel2TwoVecs; // Panel para Vector 2 en vista de dos vectores
-    private JPanel vectorInputPanelScalarVec; // Panel para el vector en vista escalar
+    private JPanel vectorInputPanel1TwoVecs; 
+    private JPanel vectorInputPanel2TwoVecs; 
+    private JPanel vectorInputPanelScalarVec; 
 
 
     // --- Pestaña Matrices ---
-    // Instancias de los Spinners que son ÚNICAS para cada dimensión (A y B)
+ 
     private JSpinner rowsA_Spinner;
     private JSpinner colsA_Spinner;
-    private JSpinner rowsB_Spinner; // Spinner para filas de Matriz B
-    private JSpinner colsB_Spinner; // Spinner para columnas de Matriz B
+    private JSpinner rowsB_Spinner; 
+    private JSpinner colsB_Spinner; 
 
-    private JTextField[][] matrixAFields; // Matriz A (TextFields)
-    private JTextField[][] matrixBFields; // Matriz B (TextFields)
+    private JTextField[][] matrixAFields; 
+    private JTextField[][] matrixBFields; 
 
-    // Paneles para la cuadrícula de JTextFields. Ahora declarados a nivel de instancia.
+
     private JPanel matrixAGridPanelTwoMats;
     private JPanel matrixBGridPanelTwoMats;
     private JPanel matrixAGridPanelScalarMat;
@@ -64,11 +66,10 @@ public class calculadoraGUI extends JFrame {
     public calculadoraGUI() {
         setTitle("Calculadora Avanzada – GUI");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(700, 600); // Tamaño inicial ajustado, más compacto
-        setLocationRelativeTo(null); // Centrar la ventana
+        setSize(700, 600);
+        setLocationRelativeTo(null);
 
-        // Configuración global de Look and Feel y estilos
-        try {
+         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             System.err.println("No se pudo establecer el Look and Feel del sistema: " + e.getMessage());
@@ -79,15 +80,14 @@ public class calculadoraGUI extends JFrame {
         tabbedPane.addTab("Básicas", createBasicPanel());
         tabbedPane.addTab("Potencia / Raíz", createPowerRootPanel());
         tabbedPane.addTab("Vectores", createVectorPanel());
-        tabbedPane.addTab("Matrices", createMatrixPanel()); // Asegúrate de que este panel se crea correctamente
+        tabbedPane.addTab("Matrices", createMatrixPanel()); 
         tabbedPane.addTab("Sistema 2x2", createSystem2x2Panel());
 
 
-        // Panel principal con BorderLayout
+
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.add(tabbedPane, BorderLayout.CENTER);
 
-        // Panel para el área de salida en la parte inferior
         JPanel outputPanel = new JPanel(new BorderLayout());
         outputPanel.setBorder(BorderFactory.createTitledBorder("Resultado / Errores"));
         outputArea.setEditable(false);
@@ -97,17 +97,23 @@ public class calculadoraGUI extends JFrame {
         outputPanel.add(scrollPane, BorderLayout.CENTER);
         mainPanel.add(outputPanel, BorderLayout.SOUTH);
 
+        // Botón para insertar 'ans'
+        JButton insertAnsButton = new JButton("Insertar Ans");
+        insertAnsButton.addActionListener(e -> insertAns());
+        JPanel ansButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        ansButtonPanel.add(insertAnsButton);
+        outputPanel.add(ansButtonPanel, BorderLayout.NORTH);
+
         add(mainPanel);
         setVisible(true);
 
-        // Inicializar dimensiones de matriz a 2x2 por defecto al iniciar
+ 
         rowsA_Spinner.setValue(2);
         colsA_Spinner.setValue(2);
         rowsB_Spinner.setValue(2);
         colsB_Spinner.setValue(2);
 
-        // Llamar a updateMatrixInputFields para inicializar los campos de matriz 2x2
-        // Esto se llama después de que la GUI es visible, para asegurar que los paneles existan
+
         SwingUtilities.invokeLater(() -> {
             System.out.println("DEBUG: Inicializando campos de matriz después de GUI visible.");
             updateMatrixInputFields();
@@ -118,7 +124,7 @@ public class calculadoraGUI extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // Entrada para números básicos
+
         basicNumbersInput = new JTextArea(3, 30);
         basicNumbersInput.setBorder(BorderFactory.createTitledBorder("Números (separados por espacios o comas)"));
         basicNumbersInput.setLineWrap(true);
@@ -126,9 +132,9 @@ public class calculadoraGUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(basicNumbersInput);
         panel.add(scrollPane, BorderLayout.NORTH);
 
-        // Panel de botones para operaciones básicas
+ 
         // Solo las 4 operaciones principales
-        JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 5, 5)); // 2 filas, 2 columnas para 4 botones
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 5, 5)); 
         String[] operations = {"Suma", "Resta", "Multiplicación", "División"};
         for (String op : operations) {
             JButton btn = new JButton(op);
@@ -152,14 +158,14 @@ public class calculadoraGUI extends JFrame {
         gbc.gridy = 0;
         panel.add(new JLabel("Base (Potencia):"), gbc);
         gbc.gridx = 1;
-        basePotenciaField = new JTextField(4); // Más compacto
+        basePotenciaField = new JTextField(4);
         panel.add(basePotenciaField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         panel.add(new JLabel("Exponente:"), gbc);
         gbc.gridx = 1;
-        exponentePotenciaField = new JTextField(4); // Más compacto
+        exponentePotenciaField = new JTextField(4); 
         panel.add(exponentePotenciaField, gbc);
 
         gbc.gridx = 0;
@@ -181,14 +187,14 @@ public class calculadoraGUI extends JFrame {
         gbc.gridwidth = 1;
         panel.add(new JLabel("Radicando (Raíz):"), gbc);
         gbc.gridx = 1;
-        radicandoRaizField = new JTextField(4); // Más compacto
+        radicandoRaizField = new JTextField(4); 
         panel.add(radicandoRaizField, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 5;
         panel.add(new JLabel("Índice (ej. 2 para raíz cuadrada):"), gbc);
         gbc.gridx = 1;
-        indiceRaizField = new JTextField(4); // Más compacto
+        indiceRaizField = new JTextField(4); 
         panel.add(indiceRaizField, gbc);
 
         gbc.gridx = 0;
@@ -205,7 +211,7 @@ public class calculadoraGUI extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // Panel de configuración (dimensiones y operación)
+  
         JPanel configPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
         vectorDimensionComboBox = new JComboBox<>(new String[]{"2", "3"});
         vectorOperationComboBox = new JComboBox<>(new String[]{"Suma", "Resta", "Producto Escalar", "Producto Vectorial", "Escalar por Vector"});
@@ -216,20 +222,20 @@ public class calculadoraGUI extends JFrame {
         configPanel.add(vectorOperationComboBox);
         panel.add(configPanel, BorderLayout.NORTH);
 
-        // Paneles para la entrada de vectores (dinámicos)
+
         vectorInputPanel1TwoVecs = new JPanel();
         vectorInputPanel2TwoVecs = new JPanel();
         vectorInputPanelScalarVec = new JPanel();
 
-        // No BorderFactory.createTitledBorder aquí, se usará JLabel para el título si es necesario
+
         vectorInputPanel1TwoVecs.setName("Vector 1 Panel");
         vectorInputPanel2TwoVecs.setName("Vector 2 Panel");
         vectorInputPanelScalarVec.setName("Vector Scalar Panel");
 
 
         JPanel inputAreaPanel = new JPanel(new CardLayout());
-        inputAreaPanel.add(createVectorTwoInputWrapperPanel(), "2_vecs_input"); // Wrapper para dos vectores
-        inputAreaPanel.add(createVectorOneInputWrapperPanel(), "1_vec_input"); // Wrapper para un vector (escalar por vector)
+        inputAreaPanel.add(createVectorTwoInputWrapperPanel(), "2_vecs_input");
+        inputAreaPanel.add(createVectorOneInputWrapperPanel(), "1_vec_input"); 
 
         panel.add(inputAreaPanel, BorderLayout.CENTER);
 
@@ -238,9 +244,9 @@ public class calculadoraGUI extends JFrame {
         btnCalcular.addActionListener(e -> executeVectorOperation());
         panel.add(btnCalcular, BorderLayout.SOUTH);
 
-        // Listener para cambiar los campos de entrada según la operación y dimensión
+
         ActionListener updateVectorInputs = e -> {
-            updateVectorInputFields(); // Llama a la función para redibujar campos
+            updateVectorInputFields(); 
             CardLayout cl = (CardLayout) (inputAreaPanel.getLayout());
             String selectedOperation = (String) vectorOperationComboBox.getSelectedItem();
             if ("Escalar por Vector".equals(selectedOperation)) {
@@ -253,15 +259,15 @@ public class calculadoraGUI extends JFrame {
         vectorDimensionComboBox.addActionListener(updateVectorInputs);
         vectorOperationComboBox.addActionListener(updateVectorInputs);
 
-        // Asegúrate de que los campos iniciales se configuren correctamente
+       
         SwingUtilities.invokeLater(this::updateVectorInputFields);
 
         return panel;
     }
 
-    // Nuevo método wrapper para el diseño de dos vectores
+
     private JPanel createVectorTwoInputWrapperPanel() {
-        JPanel wrapper = new JPanel(new GridLayout(2, 1, 5, 5)); // 2 filas, 1 columna para los dos paneles
+        JPanel wrapper = new JPanel(new GridLayout(2, 1, 5, 5)); 
         
         JPanel v1Section = new JPanel(new BorderLayout());
         v1Section.add(new JLabel("Vector 1:", SwingConstants.LEFT), BorderLayout.NORTH);
@@ -276,10 +282,9 @@ public class calculadoraGUI extends JFrame {
         return wrapper;
     }
 
-    // Nuevo método wrapper para el diseño de un vector (escalar por vector)
     private JPanel createVectorOneInputWrapperPanel() {
         JPanel wrapper = new JPanel(new BorderLayout(5, 5));
-        // Aquí no hay label "Vector:" general, ya que escalar tiene su propio label y el vector usa el título del panel de campos
+   
         wrapper.add(vectorInputPanelScalarVec, BorderLayout.CENTER);
         return wrapper;
     }
@@ -289,7 +294,7 @@ public class calculadoraGUI extends JFrame {
         int dimension = Integer.parseInt((String) vectorDimensionComboBox.getSelectedItem());
         String selectedOperation = (String) vectorOperationComboBox.getSelectedItem();
 
-        // Clear previous vector fields and panels
+    
         if (vectorInputPanel1TwoVecs != null) vectorInputPanel1TwoVecs.removeAll();
         if (vectorInputPanel2TwoVecs != null) vectorInputPanel2TwoVecs.removeAll();
         if (vectorInputPanelScalarVec != null) vectorInputPanelScalarVec.removeAll();
@@ -297,19 +302,19 @@ public class calculadoraGUI extends JFrame {
         if ("Escalar por Vector".equals(selectedOperation)) {
             vectorFields1 = new JTextField[1][dimension];
             
-            vectorInputPanelScalarVec.setLayout(new GridLayout(2, 1, 5, 5)); // Grid para escalar y vector
-            vectorInputPanelScalarVec.setBorder(new EmptyBorder(0, 0, 0, 0)); // Limpiar borde
+            vectorInputPanelScalarVec.setLayout(new GridLayout(2, 1, 5, 5));
+            vectorInputPanelScalarVec.setBorder(new EmptyBorder(0, 0, 0, 0)); 
 
-            // Setup scalar field
+            
             JPanel scalarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             scalarPanel.add(new JLabel("Escalar:"));
-            escalarVectorField = new JTextField(4); // Más compacto
+            escalarVectorField = new JTextField(4); 
             scalarPanel.add(escalarVectorField);
             vectorInputPanelScalarVec.add(scalarPanel);
 
-            // Setup vector 1 fields
-            JPanel vecPanel = new JPanel(new GridLayout(1, dimension, 3, 3)); // Más compacto
-            vecPanel.setBorder(BorderFactory.createTitledBorder("Vector")); // Mantiene el título del vector
+          
+            JPanel vecPanel = new JPanel(new GridLayout(1, dimension, 3, 3)); 
+            vecPanel.setBorder(BorderFactory.createTitledBorder("Vector")); 
             for (int i = 0; i < dimension; i++) {
                 JTextField field = new JTextField(3); // Más compacto
                 vectorFields1[0][i] = field;
@@ -318,25 +323,25 @@ public class calculadoraGUI extends JFrame {
             vectorInputPanelScalarVec.add(vecPanel);
 
         } else {
-            // Operations requiring two vectors
+            
             vectorFields1 = new JTextField[1][dimension];
             vectorFields2 = new JTextField[1][dimension];
 
-            vectorInputPanel1TwoVecs.setLayout(new GridLayout(1, dimension, 3, 3)); // Más compacto
+            vectorInputPanel1TwoVecs.setLayout(new GridLayout(1, dimension, 3, 3)); 
             for (int i = 0; i < dimension; i++) {
-                JTextField field = new JTextField(3); // Más compacto
+                JTextField field = new JTextField(3);
                 vectorFields1[0][i] = field;
                 vectorInputPanel1TwoVecs.add(field);
             }
 
-            vectorInputPanel2TwoVecs.setLayout(new GridLayout(1, dimension, 3, 3)); // Más compacto
+            vectorInputPanel2TwoVecs.setLayout(new GridLayout(1, dimension, 3, 3)); 
             for (int i = 0; i < dimension; i++) {
-                JTextField field = new JTextField(3); // Más compacto
+                JTextField field = new JTextField(3); 
                 vectorFields2[0][i] = field;
                 vectorInputPanel2TwoVecs.add(field);
             }
         }
-        // Repaint the panels to reflect changes
+      
         if (vectorInputPanel1TwoVecs != null) {
             vectorInputPanel1TwoVecs.revalidate();
             vectorInputPanel1TwoVecs.repaint();
@@ -357,7 +362,7 @@ public class calculadoraGUI extends JFrame {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // Panel de configuración (dimensiones y operación)
+   
         JPanel configPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -386,8 +391,7 @@ public class calculadoraGUI extends JFrame {
         panel.add(configPanel, BorderLayout.NORTH);
 
 
-        // Paneles de entrada para matrices (dinámicos)
-        // Inicializar los paneles que contendrán los JTextFields
+    
         matrixAGridPanelTwoMats = new JPanel();
         matrixBGridPanelTwoMats = new JPanel();
         matrixAGridPanelScalarMat = new JPanel();
@@ -395,10 +399,9 @@ public class calculadoraGUI extends JFrame {
 
 
         JPanel inputAreaPanel = new JPanel(new CardLayout());
-        inputAreaPanel.add(createMatrixTwoInputWrapperPanel(), "two_mats_input"); // Para A+B, A-B, A*B
-        inputAreaPanel.add(createMatrixScalarInputWrapperPanel(), "scalar_mat_input"); // Para Escalar * Matriz
-        inputAreaPanel.add(createMatrixOneInputWrapperPanel(), "one_mat_input"); // Para Det, Transpuesta, Inversa
-
+        inputAreaPanel.add(createMatrixTwoInputWrapperPanel(), "two_mats_input");
+        inputAreaPanel.add(createMatrixScalarInputWrapperPanel(), "scalar_mat_input");
+        inputAreaPanel.add(createMatrixOneInputWrapperPanel(), "one_mat_input");
         panel.add(inputAreaPanel, BorderLayout.CENTER);
 
         // Botón de cálculo
@@ -406,19 +409,19 @@ public class calculadoraGUI extends JFrame {
         btnCalcular.addActionListener(e -> executeMatrixOperation());
         panel.add(btnCalcular, BorderLayout.SOUTH);
 
-        // Listeners para spinners y combobox que actualizan los campos de entrada
+
         ActionListener updateInputListener = e -> {
             System.out.println("DEBUG: Cambiando dimensiones o operación de matriz. Actualizando campos.");
             updateMatrixInputFields();
             CardLayout cl = (CardLayout) (inputAreaPanel.getLayout());
             String selectedOperation = (String) matrixOperationComboBox.getSelectedItem();
 
-            // Cambiar la vista de los paneles según la operación seleccionada
+   
             if ("Suma (A + B)".equals(selectedOperation) || "Resta (A - B)".equals(selectedOperation) || "Multiplicación (A * B)".equals(selectedOperation)) {
                 cl.show(inputAreaPanel, "two_mats_input");
             } else if ("Escalar por Matriz".equals(selectedOperation)) {
                 cl.show(inputAreaPanel, "scalar_mat_input");
-            } else { // Determinante, Transpuesta, Inversa
+            } else { 
                 cl.show(inputAreaPanel, "one_mat_input");
             }
         };
@@ -429,23 +432,22 @@ public class calculadoraGUI extends JFrame {
         colsB_Spinner.addChangeListener(e -> updateInputListener.actionPerformed(null));
         matrixOperationComboBox.addActionListener(updateInputListener);
 
-        // Inicializar los campos de matriz al final de la construcción del panel,
-        // o después de que el frame sea visible para asegurar que los componentes estén completamente renderizados.
-        SwingUtilities.invokeLater(this::updateMatrixInputFields); // Llama a la inicialización
+
+        SwingUtilities.invokeLater(this::updateMatrixInputFields); 
 
         return panel;
     }
 
-    // Método wrapper para el panel de entrada de dos matrices (con labels)
+
     private JPanel createMatrixTwoInputWrapperPanel() {
-        JPanel wrapper = new JPanel(new GridLayout(2, 1, 10, 10)); // 2 filas, 1 columna para secciones A y B
+        JPanel wrapper = new JPanel(new GridLayout(2, 1, 10, 10));
 
         JPanel matASection = new JPanel(new BorderLayout());
-        matASection.add(new JLabel("Matriz A:", SwingConstants.LEFT), BorderLayout.NORTH); // Etiqueta simple
+        matASection.add(new JLabel("Matriz A:", SwingConstants.LEFT), BorderLayout.NORTH); 
         matASection.add(matrixAGridPanelTwoMats, BorderLayout.CENTER);
 
         JPanel matBSection = new JPanel(new BorderLayout());
-        matBSection.add(new JLabel("Matriz B:", SwingConstants.LEFT), BorderLayout.NORTH); // Etiqueta simple
+        matBSection.add(new JLabel("Matriz B:", SwingConstants.LEFT), BorderLayout.NORTH); 
         matBSection.add(matrixBGridPanelTwoMats, BorderLayout.CENTER);
 
         wrapper.add(matASection);
@@ -453,27 +455,26 @@ public class calculadoraGUI extends JFrame {
         return wrapper;
     }
 
-    // Método wrapper para el panel de entrada de escalar por matriz (con labels)
     private JPanel createMatrixScalarInputWrapperPanel() {
         JPanel wrapper = new JPanel(new BorderLayout(5, 5));
         JPanel scalarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         scalarPanel.add(new JLabel("Escalar:"));
-        scalarMatrixField = new JTextField(4); // Más compacto
+        scalarMatrixField = new JTextField(4); 
         scalarPanel.add(scalarMatrixField);
         wrapper.add(scalarPanel, BorderLayout.NORTH);
 
         JPanel matSection = new JPanel(new BorderLayout());
-        matSection.add(new JLabel("Matriz:", SwingConstants.LEFT), BorderLayout.NORTH); // Etiqueta simple
+        matSection.add(new JLabel("Matriz:", SwingConstants.LEFT), BorderLayout.NORTH); 
         matSection.add(matrixAGridPanelScalarMat, BorderLayout.CENTER);
         wrapper.add(matSection, BorderLayout.CENTER);
         return wrapper;
     }
 
-    // Método wrapper para el panel de entrada de una sola matriz (con label)
+
     private JPanel createMatrixOneInputWrapperPanel() {
         JPanel wrapper = new JPanel(new BorderLayout(5, 5));
         JPanel matSection = new JPanel(new BorderLayout());
-        matSection.add(new JLabel("Matriz A:", SwingConstants.LEFT), BorderLayout.NORTH); // Etiqueta simple
+        matSection.add(new JLabel("Matriz A:", SwingConstants.LEFT), BorderLayout.NORTH); 
         matSection.add(matrixAGridPanelOneMat, BorderLayout.CENTER);
         wrapper.add(matSection, BorderLayout.CENTER);
         return wrapper;
@@ -490,68 +491,68 @@ public class calculadoraGUI extends JFrame {
 
         String selectedOperation = (String) matrixOperationComboBox.getSelectedItem();
 
-        // Limpiar todos los paneles de entrada de matrices antes de redibujar
+  
         matrixAGridPanelTwoMats.removeAll();
         matrixBGridPanelTwoMats.removeAll();
         matrixAGridPanelScalarMat.removeAll();
         matrixAGridPanelOneMat.removeAll();
 
-        // 1. Configurar campos para operaciones de dos matrices (Suma, Resta, Multiplicación)
+ 
         if ("Suma (A + B)".equals(selectedOperation) || "Resta (A - B)".equals(selectedOperation) || "Multiplicación (A * B)".equals(selectedOperation)) {
-            // Redimensionar los arrays de JTextFields a las nuevas dimensiones
+            
             matrixAFields = new JTextField[rowsA][colsA];
             matrixBFields = new JTextField[rowsB][colsB];
 
-            matrixAGridPanelTwoMats.setLayout(new GridLayout(rowsA, colsA, 3, 3)); // Más compacto
+            matrixAGridPanelTwoMats.setLayout(new GridLayout(rowsA, colsA, 3, 3)); 
             for (int i = 0; i < rowsA; i++) {
                 for (int j = 0; j < colsA; j++) {
-                    JTextField field = new JTextField(3); // Más compacto
-                    matrixAFields[i][j] = field; // ASIGNACIÓN CRÍTICA
+                    JTextField field = new JTextField(3); 
+                    matrixAFields[i][j] = field; 
                     matrixAGridPanelTwoMats.add(field);
                 }
             }
 
-            matrixBGridPanelTwoMats.setLayout(new GridLayout(rowsB, colsB, 3, 3)); // Más compacto
+            matrixBGridPanelTwoMats.setLayout(new GridLayout(rowsB, colsB, 3, 3));
             for (int i = 0; i < rowsB; i++) {
                 for (int j = 0; j < colsB; j++) {
-                    JTextField field = new JTextField(3); // Más compacto
-                    matrixBFields[i][j] = field; // ASIGNACIÓN CRÍTICA
+                    JTextField field = new JTextField(3); 
+                    matrixBFields[i][j] = field; 
                     matrixBGridPanelTwoMats.add(field);
                 }
             }
         }
-        // 2. Configurar campos para Escalar por Matriz
-        else if ("Escalar por Matriz".equals(selectedOperation)) {
-            matrixAFields = new JTextField[rowsA][colsA]; // Solo se necesita Matriz A
 
-            matrixAGridPanelScalarMat.setLayout(new GridLayout(rowsA, colsA, 3, 3)); // Más compacto
+        else if ("Escalar por Matriz".equals(selectedOperation)) {
+            matrixAFields = new JTextField[rowsA][colsA]; 
+
+            matrixAGridPanelScalarMat.setLayout(new GridLayout(rowsA, colsA, 3, 3)); 
             for (int i = 0; i < rowsA; i++) {
                 for (int j = 0; j < colsA; j++) {
-                    JTextField field = new JTextField(3); // Más compacto
-                    matrixAFields[i][j] = field; // ASIGNACIÓN CRÍTICA
+                    JTextField field = new JTextField(3); 
+                    matrixAFields[i][j] = field; 
                     matrixAGridPanelScalarMat.add(field);
                 }
             }
-            // Asegurarse de que el campo escalar esté disponible
+           
             if (scalarMatrixField == null) {
-                scalarMatrixField = new JTextField(4); // Más compacto
+                scalarMatrixField = new JTextField(4);
             }
         }
-        // 3. Configurar campos para operaciones de una sola matriz (Determinante, Transpuesta, Inversa)
-        else { // Determinante, Transpuesta, Inversa
-            matrixAFields = new JTextField[rowsA][colsA]; // Solo se necesita Matriz A
+        
+        else { 
+            matrixAFields = new JTextField[rowsA][colsA]; 
 
-            matrixAGridPanelOneMat.setLayout(new GridLayout(rowsA, colsA, 3, 3)); // Más compacto
+            matrixAGridPanelOneMat.setLayout(new GridLayout(rowsA, colsA, 3, 3));
             for (int i = 0; i < rowsA; i++) {
                 for (int j = 0; j < colsA; j++) {
-                    JTextField field = new JTextField(3); // Más compacto
-                    matrixAFields[i][j] = field; // ASIGNACIÓN CRÍTICA
+                    JTextField field = new JTextField(3); 
+                    matrixAFields[i][j] = field; 
                     matrixAGridPanelOneMat.add(field);
                 }
             }
         }
 
-        // Revalidar y repintar todos los paneles para asegurar que los cambios se reflejen
+     
         matrixAGridPanelTwoMats.revalidate();
         matrixAGridPanelTwoMats.repaint();
         matrixBGridPanelTwoMats.revalidate();
@@ -574,19 +575,19 @@ public class calculadoraGUI extends JFrame {
 
         // Ecuación 1: a1x + b1y = c1
         gbc.gridx = 0; gbc.gridy = 0; panel.add(new JLabel("Ecuación 1:"), gbc);
-        gbc.gridx = 1; a1Field = new JTextField(4); panel.add(a1Field, gbc); // Más compacto
+        gbc.gridx = 1; a1Field = new JTextField(4); panel.add(a1Field, gbc); 
         gbc.gridx = 2; panel.add(new JLabel("x +"), gbc);
-        gbc.gridx = 3; b1Field = new JTextField(4); panel.add(b1Field, gbc); // Más compacto
+        gbc.gridx = 3; b1Field = new JTextField(4); panel.add(b1Field, gbc);
         gbc.gridx = 4; panel.add(new JLabel("y ="), gbc);
-        gbc.gridx = 5; c1Field = new JTextField(4); panel.add(c1Field, gbc); // Más compacto
+        gbc.gridx = 5; c1Field = new JTextField(4); panel.add(c1Field, gbc); 
 
         // Ecuación 2: a2x + b2y = c2
         gbc.gridx = 0; gbc.gridy = 1; panel.add(new JLabel("Ecuación 2:"), gbc);
-        gbc.gridx = 1; a2Field = new JTextField(4); panel.add(a2Field, gbc); // Más compacto
+        gbc.gridx = 1; a2Field = new JTextField(4); panel.add(a2Field, gbc); 
         gbc.gridx = 2; panel.add(new JLabel("x +"), gbc);
-        gbc.gridx = 3; b2Field = new JTextField(4); panel.add(b2Field, gbc); // Más compacto
+        gbc.gridx = 3; b2Field = new JTextField(4); panel.add(b2Field, gbc);
         gbc.gridx = 4; panel.add(new JLabel("y ="), gbc);
-        gbc.gridx = 5; c2Field = new JTextField(4); panel.add(c2Field, gbc); // Más compacto
+        gbc.gridx = 5; c2Field = new JTextField(4); panel.add(c2Field, gbc); 
 
         // Botón Resolver
         gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 6;
@@ -633,28 +634,6 @@ public class calculadoraGUI extends JFrame {
                     }
                     print(String.format("División: %.4f", result));
                     break;
-                /* Eliminadas por petición del usuario
-                case "Modulo":
-                    if (numbers.size() < 2) throw new IllegalArgumentException("Se necesitan al menos dos números para el módulo.");
-                    result = numbers.get(0) % numbers.get(1);
-                    print(String.format("Módulo: %.4f", result));
-                    break;
-                case "Seno":
-                    if (numbers.size() != 1) throw new IllegalArgumentException("Ingresa solo un número para el seno.");
-                    result = Math.sin(Math.toRadians(numbers.get(0)));
-                    print(String.format("Seno(%.2f°): %.4f", numbers.get(0), result));
-                    break;
-                case "Coseno":
-                    if (numbers.size() != 1) throw new IllegalArgumentException("Ingresa solo un número para el coseno.");
-                    result = Math.cos(Math.toRadians(numbers.get(0)));
-                    print(String.format("Coseno(%.2f°): %.4f", numbers.get(0), result));
-                    break;
-                case "Tangente":
-                    if (numbers.size() != 1) throw new IllegalArgumentException("Ingresa solo un número para la tangente.");
-                    result = Math.tan(Math.toRadians(numbers.get(0)));
-                    print(String.format("Tangente(%.2f°): %.4f", numbers.get(0), result));
-                    break;
-                */
             }
         } catch (NumberFormatException e) {
             printErr("Entrada numérica inválida: " + e.getMessage());
@@ -682,10 +661,12 @@ public class calculadoraGUI extends JFrame {
             double indice = parseDoubleField(indiceRaizField, "Índice");
 
             if (radicando < 0 && indice % 2 == 0) {
-                throw new IllegalArgumentException("No se puede calcular la raíz par de un número negativo.");
+                printErr("No se puede calcular la raíz par de un número negativo.");
+                return;
             }
             if (indice == 0) {
-                throw new IllegalArgumentException("El índice de la raíz no puede ser cero.");
+                printErr("El índice de la raíz no puede ser cero.");
+                return;
             }
 
             double result = Math.pow(radicando, 1.0 / indice);
@@ -778,7 +759,7 @@ public class calculadoraGUI extends JFrame {
             switch (selectedOperation) {
                 case "Suma (A + B)":
                 case "Resta (A - B)":
-                    // Asegurar que las matrices tienen las mismas dimensiones para suma y resta
+               
                     if (rowsA != rowsB || colsA != colsB) {
                         throw new IllegalArgumentException("Las matrices deben tener las mismas dimensiones para " + selectedOperation.split(" ")[0].toLowerCase() + ".");
                     }
@@ -798,7 +779,7 @@ public class calculadoraGUI extends JFrame {
                     break;
 
                 case "Multiplicación (A * B)":
-                    // Para la multiplicación, colsA debe ser igual a rowsB
+                
                     if (colsA != rowsB) {
                         throw new IllegalArgumentException("Para la multiplicación (A*B), el número de columnas de A debe ser igual al número de filas de B.");
                     }
@@ -849,7 +830,8 @@ public class calculadoraGUI extends JFrame {
                     matA = getMatrixInput(matrixAFields, "Matriz A");
                     double detInv = determinant(matA);
                     if (detInv == 0) {
-                        throw new ArithmeticException("La matriz no tiene inversa (determinante es cero).");
+                        printErr("La matriz no tiene inversa (determinante es cero).");
+                        return;
                     }
                     resultMatrix = inverse(matA);
                     print("Inversa de Matriz A:\n" + matToString(resultMatrix));
@@ -861,7 +843,7 @@ public class calculadoraGUI extends JFrame {
             printErr("Error: " + e.getMessage());
         } catch (Exception e) {
             printErr("Ocurrió un error inesperado: " + e.getMessage());
-            e.printStackTrace(); // Imprime la traza de la pila para depuración
+            e.printStackTrace();
         }
     }
 
@@ -893,14 +875,14 @@ public class calculadoraGUI extends JFrame {
     }
 
 
-    // --- Utilidades de Parsing y Validación ---
+
 
     private List<Double> parseBasicNumbersInput() throws NumberFormatException {
         String text = basicNumbersInput.getText().trim();
         if (text.isEmpty()) {
             return new ArrayList<>();
         }
-        return Arrays.stream(text.split("[\\s,]+")) // Divide por espacios o comas
+        return Arrays.stream(text.split("[\\s,]+")) 
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
                 .map(Double::parseDouble)
@@ -922,13 +904,11 @@ public class calculadoraGUI extends JFrame {
         }
     }
 
-    // Modificado: Ahora infiere las dimensiones de los campos existentes
+
     private double[][] getMatrixInput(JTextField[][] fields, String matrixName) throws NumberFormatException {
-        // *** VERIFICACIÓN REFORZADA AL PRINCIPIO DEL MÉTODO ***
-        // Verificamos si 'fields' es null O si su primera dimensión es 0 (vacío)
-        // O si su primera fila (fields[0]) es null O si su segunda dimensión es 0
+
         if (fields == null || fields.length == 0 || fields[0] == null || fields[0].length == 0) {
-            // Este error explícito se mostrará en el outputArea si la matriz de JTextFields no está bien construida.
+            
             throw new IllegalStateException("La interfaz para la '" + matrixName + "' no está lista o sus dimensiones son incorrectas. Por favor, revisa que la matriz haya sido dibujada correctamente y que no esté vacía.");
         }
 
@@ -939,23 +919,23 @@ public class calculadoraGUI extends JFrame {
 
         double[][] matrix = new double[rows][cols];
         for (int i = 0; i < rows; i++) {
-            if (fields[i] == null) { // Verificación adicional para cada fila
+            if (fields[i] == null) { 
                  throw new IllegalStateException("Error interno: Fila " + (i + 1) + " de la matriz '" + matrixName + "' es nula.");
             }
-            if (fields[i].length != cols) { // Verificación de consistencia de columnas
+            if (fields[i].length != cols) { 
                  throw new IllegalStateException("Error interno: Fila " + (i + 1) + " de la matriz '" + matrixName + "' tiene una dimensión inconsistente (" + fields[i].length + " esperadas " + cols + ").");
             }
 
             for (int j = 0; j < cols; j++) {
                 JTextField field = fields[i][j];
-                // Verificación adicional para campos individuales
+               
                 if (field == null) {
                     throw new IllegalStateException("Error interno: Campo de matriz '" + matrixName + "' en [" + (i + 1) + "," + (j + 1) + "] es nulo. Revisa la configuración de la interfaz.");
                 }
-                String text = field.getText(); // <-- Capturamos el texto del campo
+                String text = field.getText(); 
                 System.out.println("DEBUG: Leyendo " + matrixName + " [" + (i+1) + "," + (j+1) + "]: '" + text + "'"); // <-- MUY IMPORTANTE: Depuración del texto leído
 
-                if (text.trim().isEmpty()) { // Verificar si el texto está realmente vacío
+                if (text.trim().isEmpty()) { 
                     throw new NumberFormatException("El campo '" + matrixName + " [" + (i + 1) + "," + (j + 1) + "]' no puede estar vacío.");
                 }
                 try {
@@ -995,8 +975,7 @@ public class calculadoraGUI extends JFrame {
     }
 
 
-    // --- Lógica de cálculo de Matrices ---
-    // (Métodos movidos de calculadora.java y adaptados para esta clase)
+
 
     public double[][] addMatrices(double[][] a, double[][] b) {
         int rows = a.length;
@@ -1055,7 +1034,6 @@ public class calculadoraGUI extends JFrame {
         return result;
     }
 
-    // Método para calcular el determinante (recursivo)
     public double determinant(double[][] matrix) {
         int n = matrix.length;
         if (n == 1) {
@@ -1072,7 +1050,7 @@ public class calculadoraGUI extends JFrame {
         return det;
     }
 
-    // Método para obtener la submatriz (menor)
+
     public double[][] minor(double[][] matrix, int row, int col) {
         int n = matrix.length;
         double[][] minorMatrix = new double[n - 1][n - 1];
@@ -1092,7 +1070,7 @@ public class calculadoraGUI extends JFrame {
         return minorMatrix;
     }
 
-    // Método para calcular la transpuesta
+
     public double[][] transpose(double[][] matrix) {
         int rows = matrix.length;
         int cols = matrix[0].length;
@@ -1105,7 +1083,6 @@ public class calculadoraGUI extends JFrame {
         return transposedMatrix;
     }
 
-    // Método para calcular la inversa
     public double[][] inverse(double[][] matrix) {
         int n = matrix.length;
         double det = determinant(matrix);
@@ -1130,12 +1107,11 @@ public class calculadoraGUI extends JFrame {
     }
 
 
-    // --- Utilidades de Formato ---
     private String vecToString(double[] v) {
         StringBuilder sb = new StringBuilder("(");
         for (int i = 0; i < v.length; i++) {
             sb.append(String.format("%.4f", v[i]));
-            if (i < v.length - 1) sb.append(" "); // Espacio en lugar de coma
+            if (i < v.length - 1) sb.append(" ");
         }
         sb.append(")");
         return sb.toString();
@@ -1143,14 +1119,14 @@ public class calculadoraGUI extends JFrame {
 
     private String matToString(double[][] m) {
         StringBuilder sb = new StringBuilder();
-        // Encuentra la máxima longitud de número para alinear bien
+ 
         int maxLength = 0;
         for (double[] row : m) {
             for (double val : row) {
                 maxLength = Math.max(maxLength, String.format("%.4f", val).length());
             }
         }
-        // Formatear la cadena con alineación
+     
         for (double[] row : m) {
             sb.append("[ ");
             for (double val : row) {
@@ -1161,18 +1137,44 @@ public class calculadoraGUI extends JFrame {
         return sb.toString();
     }
 
-    // --- Impresión en área de salida ---
     private void print(String msg) {
+        try {
+ 
+            String numStr = msg.replaceAll("[^\\d.-]+", " ").trim(); 
+            if (!numStr.isEmpty()) {
+                String[] parts = numStr.split("\\s+");
+                if (parts.length > 0 && !parts[0].isEmpty()) {
+                    ans = Double.parseDouble(parts[0]);
+                }
+            }
+        } catch (NumberFormatException e) {
+
+        } catch (Exception e) {
+            
+            System.err.println("Error al intentar parsear 'ans' desde el mensaje: " + e.getMessage());
+        }
         outputArea.setText(msg);
     }
 
-    private void printErr(Exception ex) {
-        outputArea.setText("❌ Error: " + ex.getMessage());
-        // ex.printStackTrace(); // Para depuración, puedes descomentar esto
-    }
 
     private void printErr(String msg) {
         outputArea.setText("❌ Error: " + msg);
+    }
+
+    private void insertAns() {
+        Component comp = getFocusOwner(); 
+        System.out.println("DEBUG: Component with focus: " + comp); 
+
+        if (comp instanceof JTextField) {
+            JTextField field = (JTextField) comp;
+            field.setText(String.valueOf(ans));
+        } else if (comp instanceof JTextArea) {
+            JTextArea area = (JTextArea) comp;
+            area.replaceSelection(String.valueOf(ans)); 
+        } else {
+           
+            printErr("Ningún campo de texto válido tiene el foco para insertar 'Ans'. Haz clic en un campo antes de usar el botón 'Ans'.");
+        }
     }
 
 
