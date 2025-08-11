@@ -23,7 +23,7 @@ public class Tablero extends JPanel {
 
     public Tablero() {
         setBackground(Color.BLACK);
-        resetearPelota();
+
         // NO inicializamos tiempoInicio aquí para que arranque después del conteo
     }
     
@@ -176,5 +176,4 @@ public class Tablero extends JPanel {
         return puntj2;
     }
 }
-
 
